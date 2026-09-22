@@ -1,0 +1,8 @@
+Online Examination System
+
+The system allows students to log in and participate in online examinations.
+
+Basic modules:
+1. Student Login
+2. Online Examination
+3. Result Viewing
