@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | ProExam</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/register.css">
+</head>
+
+<body class="auth-page">
+
+<main class="auth-layout">
+
+    <section class="auth-brand-panel">
+        <div class="auth-brand-content">
+
+            <a href="index.html" class="auth-logo">
+                <span class="auth-logo-icon">🎓</span>
+                <span>ProExam</span>
+            </a>
+
+            <div class="auth-brand-message">
+                <h1>Your next chapter starts with confidence.</h1>
+                <p>
+                    A focused place to learn, take examinations
+                    and see how far you've come. All with ProExam.
+                </p>
+            </div>
+
+            <div class="auth-illustration">
+                <img
+                    src="assets/images/node-195.png"
+                    alt="Online examination illustration"
+                >
+            </div>
+
+            <div class="auth-security">
+                <span class="security-icon">♢</span>
+                <span>Secure examinations. Meaningful progress.</span>
+            </div>
+
+            <p class="auth-copyright">
+                © 2026 ProExam. All rights reserved.
+            </p>
+
+        </div>
+    </section>
+
+
+    <section class="auth-form-panel">
+        <div class="auth-form-container">
+
+            <a href="index.html" class="back-link">
+                <span>←</span>
+                Back to home
+            </a>
+
+
+            <!-- REGISTRATION CONTENT -->
+            <div id="registrationContent">
+
+                <div class="auth-header">
+                    <span class="auth-badge">GET STARTED</span>
+
+                    <h2>Create your account</h2>
+
+                    <p>
+                        Join ProExam and make your next assessment simpler.
+                    </p>
+                </div>
+
+
+                <form id="registrationForm" class="auth-form" novalidate>
+
+                    <div class="form-group">
+                        <label for="fullName">Full name</label>
+
+                        <div class="input-wrapper">
+                            <span class="input-icon">♙</span>
+
+                            <input
+                                type="text"
+                                id="fullName"
+                                name="fullName"
+                                placeholder="Alex Johnson"
+                                autocomplete="name"
+                                required
+                            >
+                        </div>
+
+                        <small class="form-error" id="fullNameError"></small>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+
+                        <div class="input-wrapper">
+                            <span class="input-icon">✉</span>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="alex.johnson@university.edu"
+                                autocomplete="email"
+                                required
+                            >
+                        </div>
+
+                        <small class="form-error" id="emailError"></small>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+
+                        <div class="input-wrapper">
+                            <span class="input-icon">🔒</span>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="••••••••••••"
+                                autocomplete="new-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-target="password"
+                                aria-label="Show password"
+                            >◉</button>
+                        </div>
+
+                        <small class="input-hint">
+                            At least 8 characters with one capital letter,
+                            one number and one special character.
+                        </small>
+
+                        <small class="form-error" id="passwordError"></small>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm password</label>
+
+                        <div class="input-wrapper">
+                            <span class="input-icon">🔒</span>
+
+                            <input
+                                type="password"
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                placeholder="••••••••••••"
+                                autocomplete="new-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-target="confirmPassword"
+                                aria-label="Show password"
+                            >◉</button>
+                        </div>
+
+                        <small
+                            class="form-error"
+                            id="confirmPasswordError"
+                        ></small>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="role">I am a</label>
+
+                        <div class="input-wrapper select-wrapper">
+                            <select id="role" name="role" required>
+                                <option value="student" selected>Student</option>
+                                <option value="examiner">Examiner</option>
+                            </select>
+
+                            <span class="select-arrow">⌄</span>
+                        </div>
+
+                        <small class="form-error" id="roleError"></small>
+                    </div>
+
+
+                    <div class="terms-group">
+                        <label class="checkbox-label">
+                            <input
+                                type="checkbox"
+                                id="terms"
+                                name="terms"
+                                required
+                            >
+
+                            <span class="custom-checkbox"></span>
+
+                            <span>
+                                I agree to the
+                                <a href="#" class="inline-link">Terms</a>
+                                &
+                                <a href="#" class="inline-link">
+                                    Privacy Policy
+                                </a>.
+                            </span>
+                        </label>
+
+                        <small class="form-error" id="termsError"></small>
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        id="registerSubmitButton"
+                        class="auth-submit-button"
+                        disabled
+                    >
+                        <span>→</span>
+                        Create Account
+                    </button>
+
+                </form>
+
+
+                <p class="auth-switch">
+                    Already have an account?
+                    <a href="login.html">Login</a>
+                </p>
+
+            </div>
+
+
+            <!-- REGISTRATION SUCCESS COMPONENT -->
+            <div
+                id="registrationSuccess"
+                class="registration-success"
+                hidden
+            >
+                <div class="success-icon" aria-hidden="true">✓</div>
+
+                <h2>Registration successful!</h2>
+
+                <p>
+                    Your ProExam account has been created successfully.
+                    You can now continue to the login page and access your account.
+                </p>
+
+                <a
+                    href="login.html"
+                    class="auth-submit-button success-login-button"
+                >
+                    Continue to Login
+                    <span>→</span>
+                </a>
+            </div>
+
+
+            <div class="auth-privacy">
+                <span>♧</span>
+                <span>Your information stays private and secure.</span>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+
+<script src="js/auth.js"></script>
+
+</body>
+</html>
