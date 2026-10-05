@@ -1,21 +1,714 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Online Examination System</title>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="ProExam — a focused online examination platform for students and educators."
+    >
+
+    <title>ProExam | Online Examinations Made Simple</title>
+
+    <!-- Google Font -->
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- ProExam Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/landing.css">
 </head>
+
 <body>
 
-    <h1>Online Examination System</h1>
+    <!-- =====================================
+         NAVBAR
+         ===================================== -->
 
-    <p>Welcome to the Online Examination System.</p>
+    <header class="navbar">
 
-    <h2>Available Features</h2>
+        <div class="container navbar-inner">
 
-    <ul>
-        <li>Student Login</li>
-        <li>Online Examination</li>
-        <li>View Results</li>
-    </ul>
+            <a href="index.html" class="brand">
+                <span class="brand-mark" aria-hidden="true">
+                    🎓
+                </span>
+
+                <span>ProExam</span>
+            </a>
+
+
+            <nav class="nav-links" aria-label="Primary navigation">
+
+                <a
+                    href="#home"
+                    class="nav-link active"
+                >
+                    Home
+                </a>
+
+                <a
+                    href="#features"
+                    class="nav-link"
+                >
+                    Features
+                </a>
+
+                <a
+                    href="#about"
+                    class="nav-link"
+                >
+                    About
+                </a>
+
+                <a
+                    href="#contact"
+                    class="nav-link"
+                >
+                    Contact
+                </a>
+
+            </nav>
+
+
+            <div class="nav-actions">
+
+                <a
+                    href="pages/login.html"
+                    class="nav-link"
+                >
+                    Login
+                </a>
+
+                <a
+                    href="pages/register.html"
+                    class="btn btn-primary"
+                >
+                    Get Started
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <main>
+
+        <!-- =====================================
+             HERO
+             ===================================== -->
+
+        <section
+            id="home"
+            class="hero"
+        >
+
+            <div class="container hero-grid">
+
+                <div class="hero-content">
+
+                    <span class="hero-eyebrow">
+                        ✨ A smarter way to assess learning
+                    </span>
+
+
+                    <h1 class="hero-title">
+                        Online Examinations
+                        Made Simple with
+                        <span class="highlight">
+                            ProExam
+                        </span>
+                    </h1>
+
+
+                    <p class="hero-description">
+                        From the first question to the final result,
+                        bring every examination into one secure,
+                        effortless workspace. Built for students.
+                        Made for educators.
+                    </p>
+
+
+                    <div class="hero-actions">
+
+                        <a
+                            href="pages/register.html"
+                            class="btn btn-primary btn-lg"
+                        >
+                            <span>→</span>
+                            Get Started
+                        </a>
+
+                        <a
+                            href="#features"
+                            class="btn btn-secondary btn-lg"
+                        >
+                            Learn More
+                        </a>
+
+                    </div>
+
+
+                    <div class="hero-trust">
+
+                        <div class="hero-trust-item">
+                            <span class="hero-trust-icon">
+                                ✓
+                            </span>
+
+                            <span>
+                                Easy to get started
+                            </span>
+                        </div>
+
+
+                        <div class="hero-trust-item">
+                            <span class="hero-trust-icon">
+                                ✓
+                            </span>
+
+                            <span>
+                                Designed for focus
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Hero visual -->
+
+                <div>
+                    <img
+                    src="assets/images/node-44.png"
+                    alt="Student taking an online examination"
+                    class="hero-illustration"
+                    >
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             FEATURES
+             ===================================== -->
+
+        <section
+            id="features"
+            class="features-section"
+        >
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <span class="section-eyebrow">
+                        Built for better exams
+                    </span>
+
+                    <h2 class="section-title">
+                        Everything you need.
+                        Nothing in the way.
+                    </h2>
+
+                    <p class="section-description">
+                        Less administration, more meaningful
+                        assessment — for everyone.
+                    </p>
+
+                </div>
+
+
+                <div class="features-grid">
+
+
+                    <!-- Feature 1 -->
+
+                    <article class="feature-card">
+
+                        <div class="feature-icon">
+                            🛡
+                        </div>
+
+                        <h3 class="feature-title">
+                            Secure Exams
+                        </h3>
+
+                        <p class="feature-description">
+                            Give every assessment a trusted space
+                            with authenticated access and clear
+                            examination rules.
+                        </p>
+
+                    </article>
+
+
+                    <!-- Feature 2 -->
+
+                    <article class="feature-card">
+
+                        <div class="feature-icon">
+                            ⏱
+                        </div>
+
+                        <h3 class="feature-title">
+                            Timed Examinations
+                        </h3>
+
+                        <p class="feature-description">
+                            Keep students on track with visible
+                            countdowns, structured questions and
+                            automatically saved answers.
+                        </p>
+
+                    </article>
+
+
+                    <!-- Feature 3 -->
+
+                    <article class="feature-card">
+
+                        <div class="feature-icon">
+                            📊
+                        </div>
+
+                        <h3 class="feature-title">
+                            Instant Results
+                        </h3>
+
+                        <p class="feature-description">
+                            Turn submissions into clear scores,
+                            topic insights and actionable feedback.
+                        </p>
+
+                    </article>
+
+
+                    <!-- Feature 4 -->
+
+                    <article class="feature-card">
+
+                        <div class="feature-icon">
+                            ☷
+                        </div>
+
+                        <h3 class="feature-title">
+                            Easy Management
+                        </h3>
+
+                        <p class="feature-description">
+                            Create question banks, schedule
+                            examinations and review performance
+                            in one place.
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             ABOUT
+             ===================================== -->
+
+        <section
+            id="about"
+            class="about-section"
+        >
+
+            <div class="container about-grid">
+
+
+                <div class="about-content">
+
+                    <span class="section-eyebrow">
+                        About ProExam
+                    </span>
+
+                    <h2 class="about-title">
+                        A clearer path from questions
+                        to understanding.
+                    </h2>
+
+                    <p class="about-description">
+                        ProExam brings the complete examination
+                        experience into one focused platform.
+                        Students can take assessments with
+                        confidence while educators can create,
+                        manage and evaluate examinations efficiently.
+                    </p>
+
+
+                    <div class="about-points">
+
+                        <div class="about-point">
+
+                            <div class="about-point-icon">
+                                ✓
+                            </div>
+
+                            <div>
+                                <strong>
+                                    Built for students
+                                </strong>
+
+                                <span>
+                                    Focused examination experience
+                                    with clear navigation and progress.
+                                </span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="about-point">
+
+                            <div class="about-point-icon">
+                                ✓
+                            </div>
+
+                            <div>
+                                <strong>
+                                    Designed for educators
+                                </strong>
+
+                                <span>
+                                    Organize questions, examinations,
+                                    schedules and student results.
+                                </span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="about-point">
+
+                            <div class="about-point-icon">
+                                ✓
+                            </div>
+
+                            <div>
+                                <strong>
+                                    Meaningful insights
+                                </strong>
+
+                                <span>
+                                    Understand performance through
+                                    scores, results and topic-wise analysis.
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="about-visual">
+
+                    <div class="about-panel">
+
+                        <div class="about-panel-header">
+
+                            <span class="about-panel-title">
+                                Assessment overview
+                            </span>
+
+                            <span class="about-panel-status">
+                                Live
+                            </span>
+
+                        </div>
+
+
+                        <div class="about-stat">
+
+                            <span class="about-stat-label">
+                                Active examinations
+                            </span>
+
+                            <span class="about-stat-value">
+                                06
+                            </span>
+
+                        </div>
+
+
+                        <div class="about-stat">
+
+                            <span class="about-stat-label">
+                                Question bank
+                            </span>
+
+                            <span class="about-stat-value">
+                                128
+                            </span>
+
+                        </div>
+
+
+                        <div class="about-stat">
+
+                            <span class="about-stat-label">
+                                Student submissions
+                            </span>
+
+                            <span class="about-stat-value">
+                                186
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             CTA
+             ===================================== -->
+
+        <section class="cta-section">
+
+            <div class="container">
+
+                <div class="cta">
+
+                    <div class="cta-content">
+
+                        <h2 class="cta-title">
+                            Ready for a better examination experience?
+                        </h2>
+
+                        <p class="cta-description">
+                            Start with ProExam. Keep your focus
+                            on what matters — learning.
+                        </p>
+
+                    </div>
+
+
+                    <a
+                        href="pages/register.html"
+                        class="btn btn-primary btn-lg"
+                    >
+                        <span>→</span>
+                        Get Started
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================
+         FOOTER
+         ===================================== -->
+
+    <footer
+        id="contact"
+        class="footer"
+    >
+
+        <div class="container">
+
+            <div class="footer-grid">
+
+
+                <!-- Brand -->
+
+                <div class="footer-brand">
+
+                    <a
+                        href="index.html"
+                        class="brand"
+                    >
+
+                        <span class="brand-mark">
+                            🎓
+                        </span>
+
+                        <span>
+                            ProExam
+                        </span>
+
+                    </a>
+
+
+                    <p
+                        class="hero-description"
+                        style="margin-top: 20px; max-width: 420px;"
+                    >
+                        Thoughtful tools for modern examinations.
+                        A clearer path from questions to understanding.
+                    </p>
+
+                </div>
+
+
+                <!-- Platform -->
+
+                <div>
+
+                    <h3 class="footer-title">
+                        Platform
+                    </h3>
+
+                    <div class="footer-links">
+
+                        <a
+                            href="#features"
+                            class="footer-link"
+                        >
+                            Features
+                        </a>
+
+                        <a
+                            href="#about"
+                            class="footer-link"
+                        >
+                            For Students
+                        </a>
+
+                        <a
+                            href="#about"
+                            class="footer-link"
+                        >
+                            For Examiners
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Resources -->
+
+                <div>
+
+                    <h3 class="footer-title">
+                        Resources
+                    </h3>
+
+                    <div class="footer-links">
+
+                        <a
+                            href="#"
+                            class="footer-link"
+                        >
+                            Help Center
+                        </a>
+
+                        <a
+                            href="#"
+                            class="footer-link"
+                        >
+                            Exam Guidelines
+                        </a>
+
+                        <a
+                            href="#"
+                            class="footer-link"
+                        >
+                            Privacy Policy
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Contact -->
+
+                <div>
+
+                    <h3 class="footer-title">
+                        Contact
+                    </h3>
+
+                    <div class="footer-links">
+
+                        <a
+                            href="mailto:support@proexam.edu"
+                            class="footer-link"
+                        >
+                            support@proexam.edu
+                        </a>
+
+                        <a
+                            href="#contact"
+                            class="footer-link"
+                        >
+                            Contact Us
+                        </a>
+
+                        <a
+                            href="#"
+                            class="footer-link"
+                        >
+                            ProExam↗
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="footer-bottom">
+
+                <span>
+                    © 2026 ProExam. All rights reserved.
+                </span>
+
+                <span>
+                    Built for the way you learn.
+                </span>
+
+            </div>
+
+        </div>
+
+    </footer>
 
 </body>
 </html>
