@@ -207,10 +207,6 @@ const MOCK_EXAMS = [
 
         endDate: "Oct 12, 2026",
 
-        startDisplayTime: "11:00 AM",
-
-        endTimeDisplay: "11:45 AM",
-
         dashboardVisible: true
     },
 
@@ -228,7 +224,7 @@ const MOCK_EXAMS = [
 
         duration: 40,
 
-        status: "scheduled",
+        status: "available",
 
         /*
          * This exam is intentionally unpublished.
@@ -248,7 +244,29 @@ const MOCK_EXAMS = [
 
         endDate: "Oct 15, 2026",
 
-        endTimeDisplay: "2:40 PM",
+        dashboardVisible: true
+    },
+
+    {
+        id: "EXAM-006",
+
+        title: "System Design",
+
+        type: "Digital Assignment",
+
+        subjectCode: "CS207",
+
+        questions: 30,
+
+        duration: 60,
+
+        status: "scheduled",
+
+        startDate: "Oct 07, 2026",
+
+        startTime: "2:00 PM",
+
+        endDate: "Oct 15, 2026",
 
         dashboardVisible: true
     }
