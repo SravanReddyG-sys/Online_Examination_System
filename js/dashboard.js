@@ -47,7 +47,7 @@ function initializeDashboard() {
 
 
     /*
-     * Render available exams.
+     * Render examinations.
      */
     renderAvailableExams();
 
@@ -192,6 +192,7 @@ function getExamStatus(exam) {
     /*
      * Examination has not started yet.
      */
+
     if (now < startTime) {
 
         return "scheduled";
@@ -201,6 +202,7 @@ function getExamStatus(exam) {
     /*
      * Examination is currently available.
      */
+
     if (now <= endTime) {
 
         return "available";
@@ -210,32 +212,60 @@ function getExamStatus(exam) {
     /*
      * Examination availability period has ended.
      */
+
     return "closed";
+}
+
+
+/*
+ * Returns whether an examination can
+ * currently be attempted.
+ */
+
+function isExamAvailable(exam) {
+
+    return getExamStatus(exam) === "available";
 }
 
 
 /*
  * Update the calculated status of every examination.
  */
+
 function updateExamStatuses() {
 
     MOCK_EXAMS.forEach(exam => {
 
         /*
-         * Preserve the student's current in-progress state.
-         *
-         * The examination has already been started,
-         * so the dashboard continues to represent it
-         * as an in-progress examination.
+         * First determine the status using the
+         * Developer B publication + schedule rule.
          */
-        if (exam.status === "in-progress") {
+        const calculatedStatus =
+            getExamStatus(exam);
+
+
+        /*
+         * Preserve the in-progress state only when
+         * the examination is currently available.
+         *
+         * If the examination is unpublished,
+         * calculatedStatus will be "hidden" and the
+         * old in-progress state will NOT be preserved.
+         */
+        if (
+            calculatedStatus === "available" &&
+            exam.status === "in-progress"
+        ) {
 
             return;
         }
 
 
+        /*
+         * Update the examination status.
+         */
         exam.status =
-            getExamStatus(exam);
+            calculatedStatus;
     });
 }
 
@@ -268,40 +298,52 @@ function renderDashboardStatistics() {
 
 
     /*
-     * Exams visible on the dashboard.
+     * Only published examinations are considered
+     * visible on the Student Dashboard.
+     *
+     * getExamStatus() returns "hidden" for
+     * unpublished examinations.
      */
     const dashboardExams =
         MOCK_EXAMS.filter(
-            exam => exam.dashboardVisible
+            exam =>
+                exam.dashboardVisible &&
+                getExamStatus(exam) !== "hidden"
         );
 
 
     /*
      * Upcoming examinations.
      *
-     * Only published scheduled examinations
-     * are considered upcoming.
+     * An examination is upcoming when:
+     *
+     * 1. It is visible on the dashboard.
+     * 2. It is published.
+     * 3. Its start time has not arrived yet.
+     *
+     * getExamStatus() provides the final status.
      */
     const upcomingExams =
-        MOCK_EXAMS.filter(
+        dashboardExams.filter(
             exam =>
-                exam.dashboardVisible &&
-                exam.status === "scheduled"
+                getExamStatus(exam) === "scheduled"
         );
 
 
     /*
-     * Available dashboard examinations.
+     * Currently active examinations.
      *
-     * In-progress examinations are also included
-     * because they are relevant to the student's
-     * current activity.
+     * In-progress examinations are included because
+     * the student has already started them.
+     *
+     * Available examinations are included because
+     * they can currently be attempted.
      */
     const activeDashboardExams =
         dashboardExams.filter(
             exam =>
                 exam.status === "in-progress" ||
-                exam.status === "available"
+                getExamStatus(exam) === "available"
         );
 
 
@@ -333,14 +375,15 @@ function renderDashboardStatistics() {
     if (upcomingExamCount) {
 
         upcomingExamCount.textContent =
-            String(upcomingExams.length)
-                .padStart(2, "0");
+            String(
+                upcomingExams.length
+            ).padStart(2, "0");
     }
 }
 
 
 /* =========================================================
-   AVAILABLE EXAMS
+   EXAMINATIONS
    ========================================================= */
 
 function renderAvailableExams() {
@@ -357,22 +400,36 @@ function renderAvailableExams() {
 
 
     /*
-     * The Student Dashboard only displays:
+     * Developer B presentation rule:
      *
-     * - In-progress examinations
-     * - Currently available examinations
+     * Publication determines whether an examination
+     * is visible to the student.
      *
-     * Scheduled and closed examinations will
-     * be handled by the All Exams page.
+     * The current schedule status does NOT determine
+     * whether the card is displayed.
+     *
+     * Therefore:
+     *
+     * Published + Scheduled
+     *     → Display
+     *
+     * Published + Available
+     *     → Display
+     *
+     * Published + In-progress
+     *     → Display
+     *
+     * Published + Closed
+     *     → Display
+     *
+     * Unpublished
+     *     → Hidden / Not Displayed
      */
     const dashboardExams =
         MOCK_EXAMS.filter(
             exam =>
                 exam.dashboardVisible &&
-                (
-                    exam.status === "in-progress" ||
-                    exam.status === "available"
-                )
+                getExamStatus(exam) !== "hidden"
         );
 
 
@@ -393,7 +450,7 @@ function renderAvailableExams() {
 
 
     /*
-     * Render exam cards.
+     * Render all published dashboard examinations.
      */
 
     examList.innerHTML =
@@ -767,6 +824,27 @@ function getExamAction(exam) {
                 </svg>
 
                 <span>Start Exam</span>
+
+            </button>
+        `;
+    }
+
+
+    /*
+     * Closed examinations cannot be started.
+     */
+
+    if (exam.status === "closed") {
+
+        return `
+            <button
+                type="button"
+                class="exam-card-action secondary"
+                data-exam-id="${exam.id}"
+                disabled
+            >
+
+                <span>Exam Closed</span>
 
             </button>
         `;

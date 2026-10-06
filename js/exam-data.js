@@ -146,6 +146,38 @@ const MOCK_EXAMS = [
         dashboardVisible: true
     },
 
+     {
+        id: "EXAM-004",
+
+        title: "System Design",
+
+        type: "Digital Assignment",
+
+        subjectCode: "CS207",
+
+        questions: 20,
+
+        duration: 30,
+
+        status: "available",
+
+        /*
+         * Published examination.
+         */
+        published: true,
+
+        startTime: "2026-10-06T09:00:00",
+
+        endTime: "2026-10-10T18:00:00",
+
+        startDate: "Oct 06, 2026",
+
+        endDate: "Oct 10, 2026",
+
+        endTimeDisplay: "6:00 PM",
+
+        dashboardVisible: true
+    },
 
     {
         id: "EXAM-004",
@@ -179,7 +211,7 @@ const MOCK_EXAMS = [
 
         endTimeDisplay: "11:45 AM",
 
-        dashboardVisible: false
+        dashboardVisible: true
     },
 
 
@@ -212,13 +244,13 @@ const MOCK_EXAMS = [
 
         startDate: "Oct 15, 2026",
 
-        endDate: "Oct 15, 2026",
-
         startDisplayTime: "2:00 PM",
+
+        endDate: "Oct 15, 2026",
 
         endTimeDisplay: "2:40 PM",
 
-        dashboardVisible: false
+        dashboardVisible: true
     }
 ];
 
