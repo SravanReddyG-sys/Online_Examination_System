@@ -5,17 +5,23 @@
 
 
 /*
- * Developer A:
+ * These exams represent examinations that would
+ * eventually be configured and published by an Examiner.
  *
- * Examination availability is determined ONLY by
- * the configured start and end time.
+ * For now, the data is duplicated locally so that
+ * we can build and test the Student Dashboard without
+ * implementing the Examiner module.
  *
- * Publication status is NOT used to determine
- * examination availability.
+ * Developer B interpretation:
  *
- * The published property is maintained only as
- * informational metadata so that draft examinations
- * can be visually identified.
+ * An examination must be explicitly published before
+ * its configured schedule can determine its status.
+ *
+ * published: true
+ *     → Schedule determines the examination status.
+ *
+ * published: false
+ *     → Examination remains hidden.
  */
 
 const MOCK_EXAMS = [
@@ -33,6 +39,9 @@ const MOCK_EXAMS = [
 
         duration: 45,
 
+        /*
+         * This exam has already been started by the student.
+         */
         status: "in-progress",
 
         progress: {
@@ -42,18 +51,23 @@ const MOCK_EXAMS = [
         },
 
         /*
-         * Publication information is only metadata
-         * in Developer A's implementation.
+         * Developer B publication status.
          */
         published: true,
 
-        startDate: "Oct 03, 2026",
-
+        /*
+         * Machine-readable availability window.
+         */
         startTime: "2026-10-03T09:00:00",
 
-        endDate: "Oct 10, 2026",
-
         endTime: "2026-10-10T18:00:00",
+
+        /*
+         * Display values used by the dashboard.
+         */
+        startDate: "Oct 03, 2026",
+
+        endDate: "Oct 10, 2026",
 
         dashboardVisible: true
     },
@@ -75,17 +89,25 @@ const MOCK_EXAMS = [
         status: "scheduled",
 
         /*
-         * Published exam.
+         * Published examination.
+         *
+         * Since it is published, its schedule will
+         * determine whether it is scheduled, available,
+         * or closed.
          */
         published: true,
 
+        startTime: "2026-10-08T10:00:00",
+
+        endTime: "2026-10-08T10:40:00",
+
         startDate: "Oct 08, 2026",
 
-        startTime: "2026-10-08T10:00:00",
+        startDisplayTime: "10:00 AM",
 
         endDate: "Oct 08, 2026",
 
-        endTime: "2026-10-08T10:40:00",
+        endTimeDisplay: "10:40 AM",
 
         dashboardVisible: true
     },
@@ -107,21 +129,55 @@ const MOCK_EXAMS = [
         status: "available",
 
         /*
-         * Published exam.
+         * Published examination.
          */
         published: true,
 
-        startDate: "Oct 06, 2026",
-
         startTime: "2026-10-06T09:00:00",
+
+        endTime: "2026-10-10T18:00:00",
+
+        startDate: "Oct 06, 2026",
 
         endDate: "Oct 10, 2026",
 
-        endTime: "2026-10-10T18:00:00",
+        endTimeDisplay: "6:00 PM",
 
         dashboardVisible: true
     },
 
+     {
+        id: "EXAM-004",
+
+        title: "System Design",
+
+        type: "Digital Assignment",
+
+        subjectCode: "CS207",
+
+        questions: 20,
+
+        duration: 30,
+
+        status: "available",
+
+        /*
+         * Published examination.
+         */
+        published: true,
+
+        startTime: "2026-10-06T09:00:00",
+
+        endTime: "2026-10-10T18:00:00",
+
+        startDate: "Oct 06, 2026",
+
+        endDate: "Oct 10, 2026",
+
+        endTimeDisplay: "6:00 PM",
+
+        dashboardVisible: true
+    },
 
     {
         id: "EXAM-004",
@@ -139,20 +195,21 @@ const MOCK_EXAMS = [
         status: "scheduled",
 
         /*
-         * Unpublished exam.
-         *
-         * Developer A still determines its status
-         * from the schedule only.
+         * Published examination.
          */
-        published: false,
-
-        startDate: "Oct 12, 2026",
+        published: true,
 
         startTime: "2026-10-12T11:00:00",
 
+        endTime: "2026-10-12T11:45:00",
+
+        startDate: "Oct 12, 2026",
+
         endDate: "Oct 12, 2026",
 
-        endTime: "2026-10-12T11:45:00",
+        startDisplayTime: "11:00 AM",
+
+        endTimeDisplay: "11:45 AM",
 
         dashboardVisible: true
     },
@@ -174,20 +231,24 @@ const MOCK_EXAMS = [
         status: "scheduled",
 
         /*
-         * Another unpublished exam.
+         * This exam is intentionally unpublished.
          *
-         * It is still classified as Scheduled because
-         * Developer A does NOT check publication status.
+         * Even though its schedule is in the future,
+         * Developer B's business rule considers it hidden.
          */
         published: false,
 
+        startTime: "2026-10-15T14:00:00",
+
+        endTime: "2026-10-15T14:40:00",
+
         startDate: "Oct 15, 2026",
 
-        startTime: "2026-10-15T14:00:00",
+        startDisplayTime: "2:00 PM",
 
         endDate: "Oct 15, 2026",
 
-        endTime: "2026-10-15T14:40:00",
+        endTimeDisplay: "2:40 PM",
 
         dashboardVisible: true
     }
@@ -261,7 +322,6 @@ const MOCK_ATTEMPTS = [
 /* =========================================================
    MOCK STUDENT DASHBOARD STATISTICS
    ========================================================= */
-
 
 /*
  * These values represent additional student history

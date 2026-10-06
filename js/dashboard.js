@@ -35,8 +35,7 @@ function initializeDashboard() {
 
 
     /*
-     * Determine examination statuses
-     * using Developer A's schedule-based logic.
+     * Determine current examination statuses.
      */
     updateExamStatuses();
 
@@ -143,32 +142,43 @@ function displayStudentInformation(student) {
 
 
 /* =========================================================
-   EXAMINATION AVAILABILITY
-   Developer A Implementation
+   EXAM STATUS
    ========================================================= */
 
-
 /*
- * Developer A's interpretation:
+ * Developer B interpretation:
  *
- * Examination status is determined SOLELY by
- * its configured start and end time.
+ * Publication status must be checked BEFORE
+ * examination schedule.
  *
- * Publication status is NOT checked here.
+ * Rule:
  *
- * Business logic:
+ * 1. Not published
+ *       → hidden
  *
- * Before start time
- *      → scheduled
+ * 2. Published + before start
+ *       → scheduled
  *
- * Within availability window
- *      → available
+ * 3. Published + within availability window
+ *       → available
  *
- * After end time
- *      → closed
+ * 4. Published + after end
+ *       → closed
  */
 
 function getExamStatus(exam) {
+
+    /*
+     * Publication check comes first.
+     *
+     * This is the main business-logic difference
+     * between Developer A and Developer B.
+     */
+    if (!exam.published) {
+
+        return "hidden";
+    }
+
 
     const now = new Date();
 
@@ -180,7 +190,7 @@ function getExamStatus(exam) {
 
 
     /*
-     * Exam has not started yet.
+     * Examination has not started yet.
      */
 
     if (now < startTime) {
@@ -190,8 +200,7 @@ function getExamStatus(exam) {
 
 
     /*
-     * Exam is currently within
-     * its configured availability window.
+     * Examination is currently available.
      */
 
     if (now <= endTime) {
@@ -201,7 +210,7 @@ function getExamStatus(exam) {
 
 
     /*
-     * Exam availability window has ended.
+     * Examination availability period has ended.
      */
 
     return "closed";
@@ -220,8 +229,7 @@ function isExamAvailable(exam) {
 
 
 /*
- * Update the status of every examination
- * before rendering the dashboard.
+ * Update the calculated status of every examination.
  */
 
 function updateExamStatuses() {
@@ -229,15 +237,21 @@ function updateExamStatuses() {
     MOCK_EXAMS.forEach(exam => {
 
         /*
-         * Preserve the in-progress state when
-         * the examination is currently available
-         * and the student already has progress.
+         * First determine the status using the
+         * Developer B publication + schedule rule.
          */
-
         const calculatedStatus =
             getExamStatus(exam);
 
 
+        /*
+         * Preserve the in-progress state only when
+         * the examination is currently available.
+         *
+         * If the examination is unpublished,
+         * calculatedStatus will be "hidden" and the
+         * old in-progress state will NOT be preserved.
+         */
         if (
             calculatedStatus === "available" &&
             exam.status === "in-progress"
@@ -247,6 +261,9 @@ function updateExamStatuses() {
         }
 
 
+        /*
+         * Update the examination status.
+         */
         exam.status =
             calculatedStatus;
     });
@@ -281,37 +298,52 @@ function renderDashboardStatistics() {
 
 
     /*
-     * All examinations currently visible
-     * on the dashboard.
+     * Only published examinations are considered
+     * visible on the Student Dashboard.
+     *
+     * getExamStatus() returns "hidden" for
+     * unpublished examinations.
      */
     const dashboardExams =
         MOCK_EXAMS.filter(
-            exam => exam.dashboardVisible
-        );
-
-
-    /*
-     * Currently available examinations.
-     *
-     * In-progress examinations are also included
-     * because they represent examinations that the
-     * student is currently working on.
-     */
-    const availableExams =
-        dashboardExams.filter(
             exam =>
-                exam.status === "in-progress" ||
-                exam.status === "available"
+                exam.dashboardVisible &&
+                getExamStatus(exam) !== "hidden"
         );
 
 
     /*
      * Upcoming examinations.
+     *
+     * An examination is upcoming when:
+     *
+     * 1. It is visible on the dashboard.
+     * 2. It is published.
+     * 3. Its start time has not arrived yet.
+     *
+     * getExamStatus() provides the final status.
      */
     const upcomingExams =
         dashboardExams.filter(
             exam =>
-                exam.status === "scheduled"
+                getExamStatus(exam) === "scheduled"
+        );
+
+
+    /*
+     * Currently active examinations.
+     *
+     * In-progress examinations are included because
+     * the student has already started them.
+     *
+     * Available examinations are included because
+     * they can currently be attempted.
+     */
+    const activeDashboardExams =
+        dashboardExams.filter(
+            exam =>
+                exam.status === "in-progress" ||
+                getExamStatus(exam) === "available"
         );
 
 
@@ -319,7 +351,7 @@ function renderDashboardStatistics() {
 
         availableExamCount.textContent =
             String(
-                availableExams.length
+                activeDashboardExams.length
             ).padStart(2, "0");
     }
 
@@ -368,19 +400,36 @@ function renderAvailableExams() {
 
 
     /*
-     * Developer A:
+     * Developer B presentation rule:
      *
-     * All dashboard-visible examinations are displayed.
+     * Publication determines whether an examination
+     * is visible to the student.
      *
-     * Their publication state does not determine
-     * whether they are displayed.
+     * The current schedule status does NOT determine
+     * whether the card is displayed.
      *
-     * The publication state is shown only as
-     * an informational Draft indicator.
+     * Therefore:
+     *
+     * Published + Scheduled
+     *     → Display
+     *
+     * Published + Available
+     *     → Display
+     *
+     * Published + In-progress
+     *     → Display
+     *
+     * Published + Closed
+     *     → Display
+     *
+     * Unpublished
+     *     → Hidden / Not Displayed
      */
     const dashboardExams =
         MOCK_EXAMS.filter(
-            exam => exam.dashboardVisible
+            exam =>
+                exam.dashboardVisible &&
+                getExamStatus(exam) !== "hidden"
         );
 
 
@@ -401,7 +450,7 @@ function renderAvailableExams() {
 
 
     /*
-     * Render examination cards.
+     * Render all published dashboard examinations.
      */
 
     examList.innerHTML =
@@ -437,10 +486,6 @@ function createExamCard(exam) {
         getExamAction(exam);
 
 
-    const publicationIndicator =
-        getPublicationIndicator(exam);
-
-
     return `
         <article class="exam-card">
 
@@ -450,15 +495,9 @@ function createExamCard(exam) {
                     ${icon}
                 </span>
 
-                <div class="exam-card-status-group">
-
-                    <span class="exam-status ${statusClass}">
-                        ${statusLabel}
-                    </span>
-
-                    ${publicationIndicator}
-
-                </div>
+                <span class="exam-status ${statusClass}">
+                    ${statusLabel}
+                </span>
 
             </div>
 
@@ -499,43 +538,6 @@ function createExamCard(exam) {
 
 
 /* =========================================================
-   PUBLICATION INDICATOR
-   ========================================================= */
-
-/*
- * IMPORTANT:
- *
- * This function does NOT affect examination status.
- *
- * It only provides an informational indication
- * when an examination has not been published.
- *
- * This allows Developer A to display:
- *
- *     Scheduled + Draft
- *     Available + Draft
- *     Closed + Draft
- *
- * without changing the schedule-based business logic.
- */
-
-function getPublicationIndicator(exam) {
-
-    if (exam.published === false) {
-
-        return `
-            <span class="exam-status draft">
-                Draft
-            </span>
-        `;
-    }
-
-
-    return "";
-}
-
-
-/* =========================================================
    EXAM STATUS LABEL
    ========================================================= */
 
@@ -551,7 +553,9 @@ function getExamStatusLabel(status) {
 
         "completed": "Completed",
 
-        "closed": "Closed"
+        "closed": "Closed",
+
+        "hidden": "Hidden"
 
     };
 
@@ -567,7 +571,7 @@ function getExamStatusLabel(status) {
 function getExamIcon(status) {
 
     /*
-     * Data Structures / in-progress icon
+     * In-progress / Data Structures icon
      */
 
     if (status === "in-progress") {
@@ -702,6 +706,10 @@ function getExamDetails(exam) {
         return `
             <p class="exam-card-time">
                 Opens ${escapeHTML(exam.startDate)}
+                · ${escapeHTML(
+                    exam.startDisplayTime ||
+                    exam.startTime
+                )}
             </p>
         `;
     }
@@ -712,6 +720,10 @@ function getExamDetails(exam) {
         return `
             <p class="exam-card-time">
                 Open until ${escapeHTML(exam.endDate)}
+                · ${escapeHTML(
+                    exam.endTimeDisplay ||
+                    exam.endTime
+                )}
             </p>
         `;
     }
@@ -721,7 +733,11 @@ function getExamDetails(exam) {
 
         return `
             <p class="exam-card-time">
-                Closed on ${escapeHTML(exam.endDate)}
+                Closed ${escapeHTML(exam.endDate)}
+                · ${escapeHTML(
+                    exam.endTimeDisplay ||
+                    exam.endTime
+                )}
             </p>
         `;
     }
