@@ -5,13 +5,6 @@
 
 
 /*
- * These exams represent examinations that would
- * eventually be configured and published by an Examiner.
- *
- * For now, the data is duplicated locally so that
- * we can build and test the Student Dashboard without
- * implementing the Examiner module.
- *
  * Developer A:
  * Examination availability is determined only by
  * the configured start and end time.
