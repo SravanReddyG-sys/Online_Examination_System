@@ -11,6 +11,10 @@
  * For now, the data is duplicated locally so that
  * we can build and test the Student Dashboard without
  * implementing the Examiner module.
+ *
+ * Developer A:
+ * Examination availability is determined only by
+ * the configured start and end time.
  */
 
 const MOCK_EXAMS = [
@@ -38,7 +42,11 @@ const MOCK_EXAMS = [
 
         startDate: "Oct 03, 2026",
 
+        startTime: "2026-10-03T09:00:00",
+
         endDate: "Oct 10, 2026",
+
+        endTime: "2026-10-10T18:00:00",
 
         dashboardVisible: true
     },
@@ -61,9 +69,11 @@ const MOCK_EXAMS = [
 
         startDate: "Oct 08, 2026",
 
-        startTime: "10:00 AM",
+        startTime: "2026-10-08T10:00:00",
 
         endDate: "Oct 08, 2026",
+
+        endTime: "2026-10-08T10:40:00",
 
         dashboardVisible: true
     },
@@ -86,9 +96,11 @@ const MOCK_EXAMS = [
 
         startDate: "Oct 06, 2026",
 
+        startTime: "2026-10-06T09:00:00",
+
         endDate: "Oct 10, 2026",
 
-        endTime: "6:00 PM",
+        endTime: "2026-10-10T18:00:00",
 
         dashboardVisible: true
     },
@@ -111,9 +123,11 @@ const MOCK_EXAMS = [
 
         startDate: "Oct 12, 2026",
 
-        startTime: "11:00 AM",
+        startTime: "2026-10-12T11:00:00",
 
         endDate: "Oct 12, 2026",
+
+        endTime: "2026-10-12T11:45:00",
 
         dashboardVisible: false
     },
@@ -136,12 +150,15 @@ const MOCK_EXAMS = [
 
         startDate: "Oct 15, 2026",
 
-        startTime: "2:00 PM",
+        startTime: "2026-10-15T14:00:00",
 
         endDate: "Oct 15, 2026",
 
+        endTime: "2026-10-15T14:40:00",
+
         dashboardVisible: false
     }
+
 ];
 
 
@@ -206,12 +223,14 @@ const MOCK_ATTEMPTS = [
 
         result: "Passed"
     }
+
 ];
 
 
 /* =========================================================
    MOCK STUDENT DASHBOARD STATISTICS
    ========================================================= */
+
 
 /*
  * These values represent additional student history

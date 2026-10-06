@@ -35,6 +35,13 @@ function initializeDashboard() {
 
 
     /*
+     * Determine examination statuses
+     * using Developer A's schedule-based logic.
+     */
+    updateExamStatuses();
+
+
+    /*
      * Render dashboard statistics.
      */
     renderDashboardStatistics();
@@ -136,6 +143,117 @@ function displayStudentInformation(student) {
 
 
 /* =========================================================
+   EXAMINATION AVAILABILITY
+   Developer A Implementation
+   ========================================================= */
+
+
+/*
+ * Developer A's interpretation:
+ *
+ * Examination status is determined solely by
+ * its configured start and end time.
+ *
+ * Publication status is intentionally NOT checked here.
+ *
+ * Business logic:
+ *
+ * Before start time
+ *      → scheduled
+ *
+ * Within availability window
+ *      → available
+ *
+ * After end time
+ *      → closed
+ */
+
+function getExamStatus(exam) {
+
+    const now = new Date();
+
+    const startTime =
+        new Date(exam.startTime);
+
+    const endTime =
+        new Date(exam.endTime);
+
+
+    /*
+     * Exam has not started yet.
+     */
+
+    if (now < startTime) {
+
+        return "scheduled";
+    }
+
+
+    /*
+     * Exam is currently within
+     * its configured availability window.
+     */
+
+    if (now <= endTime) {
+
+        return "available";
+    }
+
+
+    /*
+     * Exam availability window has ended.
+     */
+
+    return "closed";
+}
+
+
+/*
+ * Returns whether an examination can
+ * currently be attempted.
+ */
+
+function isExamAvailable(exam) {
+
+    return getExamStatus(exam) === "available";
+}
+
+
+/*
+ * Update the status of every examination
+ * before rendering the dashboard.
+ */
+
+function updateExamStatuses() {
+
+    MOCK_EXAMS.forEach(exam => {
+
+        /*
+         * Preserve the in-progress state when
+         * the examination is currently available
+         * and the student already has progress.
+         */
+
+        const calculatedStatus =
+            getExamStatus(exam);
+
+
+        if (
+            calculatedStatus === "available" &&
+            exam.status === "in-progress"
+        ) {
+
+            return;
+        }
+
+
+        exam.status =
+            calculatedStatus;
+    });
+}
+
+
+/* =========================================================
    DASHBOARD STATISTICS
    ========================================================= */
 
@@ -163,29 +281,37 @@ function renderDashboardStatistics() {
 
 
     /*
-     * Exams visible on the dashboard.
+     * Exams currently available
+     * according to Developer A's logic.
      */
 
-    const dashboardExams =
+    const availableExams =
         MOCK_EXAMS.filter(
-            exam => exam.dashboardVisible
+            exam =>
+                exam.dashboardVisible &&
+                isExamAvailable(exam)
         );
 
 
     /*
      * Upcoming examinations.
+     *
+     * These are examinations whose start
+     * time has not yet arrived.
      */
 
     const upcomingExams =
         MOCK_EXAMS.filter(
-            exam => exam.status === "scheduled"
+            exam =>
+                exam.dashboardVisible &&
+                exam.status === "scheduled"
         );
 
 
     if (availableExamCount) {
 
         availableExamCount.textContent =
-            String(dashboardExams.length)
+            String(availableExams.length)
                 .padStart(2, "0");
     }
 
@@ -232,9 +358,16 @@ function renderAvailableExams() {
     }
 
 
-    const dashboardExams =
+    /*
+     * Only examinations that are currently
+     * available are displayed in this section.
+     */
+
+    const availableExams =
         MOCK_EXAMS.filter(
-            exam => exam.dashboardVisible
+            exam =>
+                exam.dashboardVisible &&
+                isExamAvailable(exam)
         );
 
 
@@ -242,7 +375,7 @@ function renderAvailableExams() {
      * Empty state
      */
 
-    if (dashboardExams.length === 0) {
+    if (availableExams.length === 0) {
 
         examList.innerHTML = `
             <div class="dashboard-empty-state">
@@ -259,7 +392,7 @@ function renderAvailableExams() {
      */
 
     examList.innerHTML =
-        dashboardExams
+        availableExams
             .map(exam => createExamCard(exam))
             .join("");
 }
@@ -356,7 +489,9 @@ function getExamStatusLabel(status) {
 
         "in-progress": "In progress",
 
-        "completed": "Completed"
+        "completed": "Completed",
+
+        "closed": "Closed"
 
     };
 
@@ -372,7 +507,7 @@ function getExamStatusLabel(status) {
 function getExamIcon(status) {
 
     /*
-     * Data Structures icon
+     * Data Structures / in-progress icon
      */
 
     if (status === "in-progress") {
@@ -409,8 +544,37 @@ function getExamIcon(status) {
                     rx="7"
                     ry="3"
                 />
-                <path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6" />
-                <path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6" />
+
+                <path
+                    d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"
+                />
+
+                <path
+                    d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"
+                />
+            </svg>
+        `;
+    }
+
+
+    /*
+     * Closed / clock icon
+     */
+
+    if (status === "closed") {
+
+        return `
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+            >
+                <circle
+                    cx="12"
+                    cy="12"
+                    r="8"
+                />
+
+                <path d="M12 8v4l3 2" />
             </svg>
         `;
     }
@@ -430,18 +594,23 @@ function getExamIcon(status) {
                 cy="5"
                 r="2.5"
             />
+
             <circle
                 cx="6"
                 cy="18"
                 r="2.5"
             />
+
             <circle
                 cx="18"
                 cy="18"
                 r="2.5"
             />
+
             <path d="M12 7.5v5" />
+
             <path d="M12 12.5 6 15.5" />
+
             <path d="M12 12.5 18 15.5" />
         </svg>
     `;
@@ -488,6 +657,17 @@ function getExamDetails(exam) {
     }
 
 
+    if (exam.status === "closed") {
+
+        return `
+            <p class="exam-card-time">
+                Closed on ${escapeHTML(exam.endDate)}
+                · ${escapeHTML(exam.endTime)}
+            </p>
+        `;
+    }
+
+
     return "";
 }
 
@@ -495,6 +675,7 @@ function getExamDetails(exam) {
 /* =========================================================
    EXAM ACTION
    ========================================================= */
+
 function getExamAction(exam) {
 
     if (exam.status === "in-progress") {
@@ -572,8 +753,30 @@ function getExamAction(exam) {
     }
 
 
+    /*
+     * Closed examinations cannot be started.
+     */
+
+    if (exam.status === "closed") {
+
+        return `
+            <button
+                type="button"
+                class="exam-card-action secondary"
+                data-exam-id="${exam.id}"
+                disabled
+            >
+
+                <span>Exam Closed</span>
+
+            </button>
+        `;
+    }
+
+
     return "";
 }
+
 
 /* =========================================================
    RECENT ATTEMPTS
