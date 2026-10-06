@@ -645,7 +645,7 @@ function redirectUserByRole(role) {
         case "student":
 
             window.location.href =
-                "pages/dashboard.html";
+                "student-dashboard.html";
 
             break;
 

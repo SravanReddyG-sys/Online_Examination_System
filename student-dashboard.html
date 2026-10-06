@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Student Dashboard | ProExam</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/components.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/dashboard.css"
+    >
+</head>
+
+
+<body class="dashboard-page">
+
+    <!-- =====================================================
+         TOP HEADER
+         ===================================================== -->
+
+    <header class="dashboard-header">
+
+        <div class="dashboard-brand">
+
+            <a
+                href="index.html"
+                class="dashboard-logo"
+                aria-label="ProExam home"
+            >
+
+                <span class="dashboard-logo-mark">
+                    <!-- Graduation-cap icon -->
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M3 9.5 12 5l9 4.5-9 4.5L3 9.5Z"
+                        />
+                        <path
+                            d="M7 12v4.5c2.8 2.1 7.2 2.1 10 0V12"
+                        />
+                        <path
+                            d="M21 10v5"
+                        />
+                    </svg>
+                </span>
+
+                <span class="dashboard-logo-name">
+                    ProExam
+                </span>
+
+            </a>
+
+
+            <span class="dashboard-workspace-label">
+                Student workspace
+            </span>
+
+        </div>
+
+
+        <div class="dashboard-header-actions">
+
+            <!-- Notification -->
+
+            <button
+                type="button"
+                class="dashboard-icon-button"
+                aria-label="Notifications"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
+                    />
+                    <path
+                        d="M10 21h4"
+                    />
+                </svg>
+
+            </button>
+
+
+            <!-- Student profile -->
+
+            <button
+                type="button"
+                class="dashboard-profile"
+                id="profileButton"
+                aria-label="Student profile"
+            >
+
+                <span
+                    class="dashboard-avatar"
+                    id="userInitial"
+                >
+                    S
+                </span>
+
+
+                <span class="dashboard-profile-info">
+
+                    <strong id="studentName">
+                        Student
+                    </strong>
+
+                    <small id="studentMeta">
+                        Student
+                    </small>
+
+                </span>
+
+
+                <svg
+                    class="dashboard-profile-chevron"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="m6 9 6 6 6-6"
+                    />
+                </svg>
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         DASHBOARD BODY
+         ===================================================== -->
+
+    <div class="dashboard-layout">
+
+
+        <!-- =================================================
+             SIDEBAR
+             ================================================= -->
+
+        <aside class="dashboard-sidebar">
+
+            <div class="sidebar-section">
+
+                <p class="sidebar-heading">
+                    WORKSPACE
+                </p>
+
+
+                <nav class="dashboard-navigation">
+
+                    <a
+                        href="#"
+                        class="dashboard-nav-item active"
+                    >
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <rect
+                                x="4"
+                                y="4"
+                                width="6"
+                                height="6"
+                                rx="1"
+                            />
+                            <rect
+                                x="14"
+                                y="4"
+                                width="6"
+                                height="6"
+                                rx="1"
+                            />
+                            <rect
+                                x="4"
+                                y="14"
+                                width="6"
+                                height="6"
+                                rx="1"
+                            />
+                            <rect
+                                x="14"
+                                y="14"
+                                width="6"
+                                height="6"
+                                rx="1"
+                            />
+                        </svg>
+
+                        <span>Dashboard</span>
+
+                    </a>
+
+
+                    <a
+                        href="#available-exams"
+                        class="dashboard-nav-item"
+                    >
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M6 4h12a2 2 0 0 1 2 2v14H4V6a2 2 0 0 1 2-2Z"
+                            />
+                            <path
+                                d="M8 8h8M8 12h8M8 16h5"
+                            />
+                        </svg>
+
+                        <span>Available Exams</span>
+
+                    </a>
+
+
+                    <a
+                        href="#recent-attempts"
+                        class="dashboard-nav-item"
+                    >
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M4 19V5"
+                            />
+                            <path
+                                d="M4 19h16"
+                            />
+                            <path
+                                d="m7 15 4-4 3 2 5-6"
+                            />
+                        </svg>
+
+                        <span>My Results</span>
+
+                    </a>
+
+
+                    <a
+                        href="#recent-attempts"
+                        class="dashboard-nav-item"
+                    >
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M12 7v5l3 2"
+                            />
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="8"
+                            />
+                        </svg>
+
+                        <span>Attempt History</span>
+
+                    </a>
+
+
+                    <a
+                        href="#"
+                        class="dashboard-nav-item"
+                    >
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <circle
+                                cx="12"
+                                cy="8"
+                                r="3"
+                            />
+                            <path
+                                d="M5 20c.8-3.5 3-5 7-5s6.2 1.5 7 5"
+                            />
+                        </svg>
+
+                        <span>Profile</span>
+
+                    </a>
+
+                </nav>
+
+            </div>
+
+
+            <!-- Help card -->
+
+            <div class="dashboard-sidebar-bottom">
+
+                <div class="dashboard-help-card">
+
+                    <div class="help-icon">
+                        ?
+                    </div>
+
+                    <strong>
+                        Need a hand?
+                    </strong>
+
+                    <p>
+                        Find answers in our help center.
+                    </p>
+
+                    <a href="#">
+                        Visit help center
+                        <span>↗</span>
+                    </a>
+
+                </div>
+
+
+                <!-- Logout -->
+
+                <button
+                    type="button"
+                    id="logoutButton"
+                    class="dashboard-logout"
+                >
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M10 17l5-5-5-5"
+                        />
+                        <path
+                            d="M15 12H3"
+                        />
+                        <path
+                            d="M19 5v14"
+                        />
+                    </svg>
+
+                    <span>Logout</span>
+
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =================================================
+             MAIN CONTENT
+             ================================================= -->
+
+        <main class="dashboard-main">
+
+
+            <!-- Welcome -->
+
+            <section class="dashboard-welcome">
+
+                <div>
+
+                    <h1 id="welcomeMessage">
+                        Welcome back
+                    </h1>
+
+                    <p>
+                        You're making great progress.
+                        Let's keep the momentum going.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="#available-exams"
+                    class="dashboard-browse-button"
+                >
+
+                    <span>Browse Exams</span>
+
+                    <span aria-hidden="true">
+                        →
+                    </span>
+
+                </a>
+
+            </section>
+
+
+            <!-- =================================================
+                 SUMMARY CARDS
+                 ================================================= -->
+
+            <section class="dashboard-stat-grid">
+
+
+                <article class="dashboard-stat-card">
+
+                    <div class="stat-card-header">
+
+                        <span>
+                            Available exams
+                        </span>
+
+                        <span class="stat-icon stat-icon-blue">
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    d="M6 4h12v16H6z"
+                                />
+                                <path
+                                    d="M9 8h6M9 12h6"
+                                />
+                            </svg>
+                        </span>
+
+                    </div>
+
+
+                    <strong
+                        id="availableExamCount"
+                        class="stat-value"
+                    >
+                        0
+                    </strong>
+
+
+                    <small>
+                        Ready to attempt
+                    </small>
+
+                </article>
+
+
+                <article class="dashboard-stat-card">
+
+                    <div class="stat-card-header">
+
+                        <span>
+                            Completed exams
+                        </span>
+
+                        <span class="stat-icon stat-icon-blue">
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="8"
+                                />
+                                <path
+                                    d="m8.5 12 2.5 2.5 4.5-5"
+                                />
+                            </svg>
+                        </span>
+
+                    </div>
+
+
+                    <strong
+                        id="completedExamCount"
+                        class="stat-value"
+                    >
+                        0
+                    </strong>
+
+
+                    <small>
+                        Completed this month
+                    </small>
+
+                </article>
+
+
+                <article class="dashboard-stat-card">
+
+                    <div class="stat-card-header">
+
+                        <span>
+                            Average score
+                        </span>
+
+                        <span class="stat-icon stat-icon-green">
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    d="M5 19V9M12 19V5M19 19v-7"
+                                />
+                            </svg>
+                        </span>
+
+                    </div>
+
+
+                    <strong
+                        id="averageScore"
+                        class="stat-value"
+                    >
+                        0%
+                    </strong>
+
+
+                    <small>
+                        Across completed exams
+                    </small>
+
+                </article>
+
+
+                <article class="dashboard-stat-card">
+
+                    <div class="stat-card-header">
+
+                        <span>
+                            Upcoming exams
+                        </span>
+
+                        <span class="stat-icon stat-icon-yellow">
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <rect
+                                    x="4"
+                                    y="5"
+                                    width="16"
+                                    height="15"
+                                    rx="2"
+                                />
+                                <path
+                                    d="M8 3v4M16 3v4M4 10h16"
+                                />
+                            </svg>
+                        </span>
+
+                    </div>
+
+
+                    <strong
+                        id="upcomingExamCount"
+                        class="stat-value"
+                    >
+                        0
+                    </strong>
+
+
+                    <small>
+                        Scheduled examinations
+                    </small>
+
+                </article>
+
+            </section>
+
+
+            <!-- =================================================
+                 AVAILABLE EXAMS
+                 ================================================= -->
+
+            <section
+                class="dashboard-content-section"
+                id="available-exams"
+            >
+
+                <div class="dashboard-section-header">
+
+                    <h2>
+                        Available exams
+                    </h2>
+
+                    <a href="#">
+                        View all exams →
+                    </a>
+
+                </div>
+
+
+                <div
+                    class="exam-card-grid"
+                    id="availableExamList"
+                >
+
+                    <!--
+                        Exam cards will be rendered by
+                        dashboard.js using exam data.
+                    -->
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 RECENT ATTEMPTS
+                 ================================================= -->
+
+            <section
+                class="dashboard-content-section"
+                id="recent-attempts"
+            >
+
+                <div class="dashboard-section-header">
+
+                    <h2>
+                        Recent attempts
+                    </h2>
+
+                    <a href="#">
+                        View history →
+                    </a>
+
+                </div>
+
+
+                <div class="attempts-card">
+
+                    <div class="attempts-table-header">
+
+                        <span>Examination</span>
+                        <span>Completed</span>
+                        <span>Score</span>
+                        <span>Result</span>
+
+                    </div>
+
+
+                    <div
+                        id="recentAttemptsList"
+                        class="attempts-list"
+                    >
+
+                        <!--
+                            Recent attempts will be
+                            rendered dynamically.
+                        -->
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- Footer -->
+
+            <footer class="dashboard-footer">
+
+                <span>
+                    All times shown in your local timezone (IST).
+                </span>
+
+                <span>
+                    ProExam · Student workspace
+                </span>
+
+            </footer>
+
+        </main>
+
+    </div>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
+    <script src="js/session.js"></script>
+    <script src="js/exam-data.js"></script>
+    <script src="js/dashboard.js"></script>
+
+</body>
+
+</html>
