@@ -1720,5 +1720,9 @@
     .dashboard-section-header h2 {
         font-size: 14px;
     }
+    .exam-status.draft {
+    background: #FEF3C7;
+    color: var(--color-warning);
+    }
 
 }

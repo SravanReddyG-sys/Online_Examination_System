@@ -35,13 +35,19 @@ function initializeDashboard() {
 
 
     /*
+     * Determine current examination statuses.
+     */
+    updateExamStatuses();
+
+
+    /*
      * Render dashboard statistics.
      */
     renderDashboardStatistics();
 
 
     /*
-     * Render available exams.
+     * Render examinations.
      */
     renderAvailableExams();
 
@@ -136,6 +142,135 @@ function displayStudentInformation(student) {
 
 
 /* =========================================================
+   EXAM STATUS
+   ========================================================= */
+
+/*
+ * Developer B interpretation:
+ *
+ * Publication status must be checked BEFORE
+ * examination schedule.
+ *
+ * Rule:
+ *
+ * 1. Not published
+ *       → hidden
+ *
+ * 2. Published + before start
+ *       → scheduled
+ *
+ * 3. Published + within availability window
+ *       → available
+ *
+ * 4. Published + after end
+ *       → closed
+ */
+
+function getExamStatus(exam) {
+
+    /*
+     * Publication check comes first.
+     *
+     * This is the main business-logic difference
+     * between Developer A and Developer B.
+     */
+    if (!exam.published) {
+
+        return "hidden";
+    }
+
+
+    const now = new Date();
+
+    const startTime =
+        new Date(exam.startTime);
+
+    const endTime =
+        new Date(exam.endTime);
+
+
+    /*
+     * Examination has not started yet.
+     */
+
+    if (now < startTime) {
+
+        return "scheduled";
+    }
+
+
+    /*
+     * Examination is currently available.
+     */
+
+    if (now <= endTime) {
+
+        return "available";
+    }
+
+
+    /*
+     * Examination availability period has ended.
+     */
+
+    return "closed";
+}
+
+
+/*
+ * Returns whether an examination can
+ * currently be attempted.
+ */
+
+function isExamAvailable(exam) {
+
+    return getExamStatus(exam) === "available";
+}
+
+
+/*
+ * Update the calculated status of every examination.
+ */
+
+function updateExamStatuses() {
+
+    MOCK_EXAMS.forEach(exam => {
+
+        /*
+         * First determine the status using the
+         * Developer B publication + schedule rule.
+         */
+        const calculatedStatus =
+            getExamStatus(exam);
+
+
+        /*
+         * Preserve the in-progress state only when
+         * the examination is currently available.
+         *
+         * If the examination is unpublished,
+         * calculatedStatus will be "hidden" and the
+         * old in-progress state will NOT be preserved.
+         */
+        if (
+            calculatedStatus === "available" &&
+            exam.status === "in-progress"
+        ) {
+
+            return;
+        }
+
+
+        /*
+         * Update the examination status.
+         */
+        exam.status =
+            calculatedStatus;
+    });
+}
+
+
+/* =========================================================
    DASHBOARD STATISTICS
    ========================================================= */
 
@@ -163,30 +298,61 @@ function renderDashboardStatistics() {
 
 
     /*
-     * Exams visible on the dashboard.
+     * Only published examinations are considered
+     * visible on the Student Dashboard.
+     *
+     * getExamStatus() returns "hidden" for
+     * unpublished examinations.
      */
-
     const dashboardExams =
         MOCK_EXAMS.filter(
-            exam => exam.dashboardVisible
+            exam =>
+                exam.dashboardVisible &&
+                getExamStatus(exam) !== "hidden"
         );
 
 
     /*
      * Upcoming examinations.
+     *
+     * An examination is upcoming when:
+     *
+     * 1. It is visible on the dashboard.
+     * 2. It is published.
+     * 3. Its start time has not arrived yet.
+     *
+     * getExamStatus() provides the final status.
      */
-
     const upcomingExams =
-        MOCK_EXAMS.filter(
-            exam => exam.status === "scheduled"
+        dashboardExams.filter(
+            exam =>
+                getExamStatus(exam) === "scheduled"
+        );
+
+
+    /*
+     * Currently active examinations.
+     *
+     * In-progress examinations are included because
+     * the student has already started them.
+     *
+     * Available examinations are included because
+     * they can currently be attempted.
+     */
+    const activeDashboardExams =
+        dashboardExams.filter(
+            exam =>
+                exam.status === "in-progress" ||
+                getExamStatus(exam) === "available"
         );
 
 
     if (availableExamCount) {
 
         availableExamCount.textContent =
-            String(dashboardExams.length)
-                .padStart(2, "0");
+            String(
+                activeDashboardExams.length
+            ).padStart(2, "0");
     }
 
 
@@ -209,14 +375,15 @@ function renderDashboardStatistics() {
     if (upcomingExamCount) {
 
         upcomingExamCount.textContent =
-            String(upcomingExams.length)
-                .padStart(2, "0");
+            String(
+                upcomingExams.length
+            ).padStart(2, "0");
     }
 }
 
 
 /* =========================================================
-   AVAILABLE EXAMS
+   EXAMINATIONS
    ========================================================= */
 
 function renderAvailableExams() {
@@ -232,9 +399,37 @@ function renderAvailableExams() {
     }
 
 
+    /*
+     * Developer B presentation rule:
+     *
+     * Publication determines whether an examination
+     * is visible to the student.
+     *
+     * The current schedule status does NOT determine
+     * whether the card is displayed.
+     *
+     * Therefore:
+     *
+     * Published + Scheduled
+     *     → Display
+     *
+     * Published + Available
+     *     → Display
+     *
+     * Published + In-progress
+     *     → Display
+     *
+     * Published + Closed
+     *     → Display
+     *
+     * Unpublished
+     *     → Hidden / Not Displayed
+     */
     const dashboardExams =
         MOCK_EXAMS.filter(
-            exam => exam.dashboardVisible
+            exam =>
+                exam.dashboardVisible &&
+                getExamStatus(exam) !== "hidden"
         );
 
 
@@ -255,7 +450,7 @@ function renderAvailableExams() {
 
 
     /*
-     * Render exam cards.
+     * Render all published dashboard examinations.
      */
 
     examList.innerHTML =
@@ -356,7 +551,11 @@ function getExamStatusLabel(status) {
 
         "in-progress": "In progress",
 
-        "completed": "Completed"
+        "completed": "Completed",
+
+        "closed": "Closed",
+
+        "hidden": "Hidden"
 
     };
 
@@ -372,7 +571,7 @@ function getExamStatusLabel(status) {
 function getExamIcon(status) {
 
     /*
-     * Data Structures icon
+     * In-progress / Data Structures icon
      */
 
     if (status === "in-progress") {
@@ -409,8 +608,39 @@ function getExamIcon(status) {
                     rx="7"
                     ry="3"
                 />
-                <path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6" />
-                <path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6" />
+
+                <path
+                    d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"
+                />
+
+                <path
+                    d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"
+                />
+            </svg>
+        `;
+    }
+
+
+    /*
+     * Closed / clock icon
+     */
+
+    if (status === "closed") {
+
+        return `
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+            >
+                <circle
+                    cx="12"
+                    cy="12"
+                    r="8"
+                />
+
+                <path
+                    d="M12 8v4l3 2"
+                />
             </svg>
         `;
     }
@@ -430,18 +660,23 @@ function getExamIcon(status) {
                 cy="5"
                 r="2.5"
             />
+
             <circle
                 cx="6"
                 cy="18"
                 r="2.5"
             />
+
             <circle
                 cx="18"
                 cy="18"
                 r="2.5"
             />
+
             <path d="M12 7.5v5" />
+
             <path d="M12 12.5 6 15.5" />
+
             <path d="M12 12.5 18 15.5" />
         </svg>
     `;
@@ -471,7 +706,10 @@ function getExamDetails(exam) {
         return `
             <p class="exam-card-time">
                 Opens ${escapeHTML(exam.startDate)}
-                · ${escapeHTML(exam.startTime)}
+                · ${escapeHTML(
+                    exam.startDisplayTime ||
+                    exam.startTime
+                )}
             </p>
         `;
     }
@@ -482,7 +720,24 @@ function getExamDetails(exam) {
         return `
             <p class="exam-card-time">
                 Open until ${escapeHTML(exam.endDate)}
-                · ${escapeHTML(exam.endTime)}
+                · ${escapeHTML(
+                    exam.endTimeDisplay ||
+                    exam.endTime
+                )}
+            </p>
+        `;
+    }
+
+
+    if (exam.status === "closed") {
+
+        return `
+            <p class="exam-card-time">
+                Closed ${escapeHTML(exam.endDate)}
+                · ${escapeHTML(
+                    exam.endTimeDisplay ||
+                    exam.endTime
+                )}
             </p>
         `;
     }
@@ -495,6 +750,7 @@ function getExamDetails(exam) {
 /* =========================================================
    EXAM ACTION
    ========================================================= */
+
 function getExamAction(exam) {
 
     if (exam.status === "in-progress") {
@@ -539,7 +795,9 @@ function getExamAction(exam) {
                         r="8"
                     />
 
-                    <path d="M12 8v4l2.5 2.5" />
+                    <path
+                        d="M12 8v4l2.5 2.5"
+                    />
                 </svg>
 
                 <span>View Details</span>
@@ -572,8 +830,30 @@ function getExamAction(exam) {
     }
 
 
+    /*
+     * Closed examinations cannot be started.
+     */
+
+    if (exam.status === "closed") {
+
+        return `
+            <button
+                type="button"
+                class="exam-card-action secondary"
+                data-exam-id="${exam.id}"
+                disabled
+            >
+
+                <span>Exam Closed</span>
+
+            </button>
+        `;
+    }
+
+
     return "";
 }
+
 
 /* =========================================================
    RECENT ATTEMPTS
