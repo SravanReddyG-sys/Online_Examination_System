@@ -223,3 +223,54 @@
     }
 
 }
+/* =========================================================
+   REGISTRATION PAGE RESPONSIVE STYLES
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .auth-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .auth-brand-panel {
+        display: none;
+    }
+
+    .auth-form-panel {
+        min-height: 100vh;
+    }
+
+    .auth-form-container {
+        max-width: 520px;
+        padding: 35px 30px;
+    }
+
+    .auth-header {
+        margin-top: 45px;
+    }
+}
+
+
+@media (max-width: 500px) {
+
+    .auth-form-container {
+        padding: 25px 20px;
+    }
+
+    .auth-header {
+        margin-top: 35px;
+    }
+
+    .auth-header h2 {
+        font-size: 23px;
+    }
+
+    .auth-form {
+        margin-top: 22px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+}
