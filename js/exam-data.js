@@ -6,8 +6,16 @@
 
 /*
  * Developer A:
- * Examination availability is determined only by
+ *
+ * Examination availability is determined ONLY by
  * the configured start and end time.
+ *
+ * Publication status is NOT used to determine
+ * examination availability.
+ *
+ * The published property is maintained only as
+ * informational metadata so that draft examinations
+ * can be visually identified.
  */
 
 const MOCK_EXAMS = [
@@ -32,6 +40,12 @@ const MOCK_EXAMS = [
             totalQuestions: 30,
             remainingTime: "32:18"
         },
+
+        /*
+         * Publication information is only metadata
+         * in Developer A's implementation.
+         */
+        published: true,
 
         startDate: "Oct 03, 2026",
 
@@ -60,6 +74,11 @@ const MOCK_EXAMS = [
 
         status: "scheduled",
 
+        /*
+         * Published exam.
+         */
+        published: true,
+
         startDate: "Oct 08, 2026",
 
         startTime: "2026-10-08T10:00:00",
@@ -86,6 +105,11 @@ const MOCK_EXAMS = [
         duration: 30,
 
         status: "available",
+
+        /*
+         * Published exam.
+         */
+        published: true,
 
         startDate: "Oct 06, 2026",
 
@@ -114,6 +138,14 @@ const MOCK_EXAMS = [
 
         status: "scheduled",
 
+        /*
+         * Unpublished exam.
+         *
+         * Developer A still determines its status
+         * from the schedule only.
+         */
+        published: false,
+
         startDate: "Oct 12, 2026",
 
         startTime: "2026-10-12T11:00:00",
@@ -122,7 +154,7 @@ const MOCK_EXAMS = [
 
         endTime: "2026-10-12T11:45:00",
 
-        dashboardVisible: false
+        dashboardVisible: true
     },
 
 
@@ -141,6 +173,14 @@ const MOCK_EXAMS = [
 
         status: "scheduled",
 
+        /*
+         * Another unpublished exam.
+         *
+         * It is still classified as Scheduled because
+         * Developer A does NOT check publication status.
+         */
+        published: false,
+
         startDate: "Oct 15, 2026",
 
         startTime: "2026-10-15T14:00:00",
@@ -149,9 +189,8 @@ const MOCK_EXAMS = [
 
         endTime: "2026-10-15T14:40:00",
 
-        dashboardVisible: false
+        dashboardVisible: true
     }
-
 ];
 
 
@@ -216,7 +255,6 @@ const MOCK_ATTEMPTS = [
 
         result: "Passed"
     }
-
 ];
 
 

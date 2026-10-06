@@ -48,7 +48,7 @@ function initializeDashboard() {
 
 
     /*
-     * Render available exams.
+     * Render examinations.
      */
     renderAvailableExams();
 
@@ -151,10 +151,10 @@ function displayStudentInformation(student) {
 /*
  * Developer A's interpretation:
  *
- * Examination status is determined solely by
+ * Examination status is determined SOLELY by
  * its configured start and end time.
  *
- * Publication status is intentionally NOT checked here.
+ * Publication status is NOT checked here.
  *
  * Business logic:
  *
@@ -281,29 +281,36 @@ function renderDashboardStatistics() {
 
 
     /*
-     * Exams currently available
-     * according to Developer A's logic.
+     * All examinations currently visible
+     * on the dashboard.
      */
-
-    const availableExams =
+    const dashboardExams =
         MOCK_EXAMS.filter(
+            exam => exam.dashboardVisible
+        );
+
+
+    /*
+     * Currently available examinations.
+     *
+     * In-progress examinations are also included
+     * because they represent examinations that the
+     * student is currently working on.
+     */
+    const availableExams =
+        dashboardExams.filter(
             exam =>
-                exam.dashboardVisible &&
-                isExamAvailable(exam)
+                exam.status === "in-progress" ||
+                exam.status === "available"
         );
 
 
     /*
      * Upcoming examinations.
-     *
-     * These are examinations whose start
-     * time has not yet arrived.
      */
-
     const upcomingExams =
-        MOCK_EXAMS.filter(
+        dashboardExams.filter(
             exam =>
-                exam.dashboardVisible &&
                 exam.status === "scheduled"
         );
 
@@ -311,8 +318,9 @@ function renderDashboardStatistics() {
     if (availableExamCount) {
 
         availableExamCount.textContent =
-            String(availableExams.length)
-                .padStart(2, "0");
+            String(
+                availableExams.length
+            ).padStart(2, "0");
     }
 
 
@@ -335,14 +343,15 @@ function renderDashboardStatistics() {
     if (upcomingExamCount) {
 
         upcomingExamCount.textContent =
-            String(upcomingExams.length)
-                .padStart(2, "0");
+            String(
+                upcomingExams.length
+            ).padStart(2, "0");
     }
 }
 
 
 /* =========================================================
-   AVAILABLE EXAMS
+   EXAMINATIONS
    ========================================================= */
 
 function renderAvailableExams() {
@@ -359,15 +368,19 @@ function renderAvailableExams() {
 
 
     /*
-     * Only examinations that are currently
-     * available are displayed in this section.
+     * Developer A:
+     *
+     * All dashboard-visible examinations are displayed.
+     *
+     * Their publication state does not determine
+     * whether they are displayed.
+     *
+     * The publication state is shown only as
+     * an informational Draft indicator.
      */
-
-    const availableExams =
+    const dashboardExams =
         MOCK_EXAMS.filter(
-            exam =>
-                exam.dashboardVisible &&
-                isExamAvailable(exam)
+            exam => exam.dashboardVisible
         );
 
 
@@ -375,7 +388,7 @@ function renderAvailableExams() {
      * Empty state
      */
 
-    if (availableExams.length === 0) {
+    if (dashboardExams.length === 0) {
 
         examList.innerHTML = `
             <div class="dashboard-empty-state">
@@ -388,11 +401,11 @@ function renderAvailableExams() {
 
 
     /*
-     * Render exam cards.
+     * Render examination cards.
      */
 
     examList.innerHTML =
-        availableExams
+        dashboardExams
             .map(exam => createExamCard(exam))
             .join("");
 }
@@ -424,6 +437,10 @@ function createExamCard(exam) {
         getExamAction(exam);
 
 
+    const publicationIndicator =
+        getPublicationIndicator(exam);
+
+
     return `
         <article class="exam-card">
 
@@ -433,9 +450,15 @@ function createExamCard(exam) {
                     ${icon}
                 </span>
 
-                <span class="exam-status ${statusClass}">
-                    ${statusLabel}
-                </span>
+                <div class="exam-card-status-group">
+
+                    <span class="exam-status ${statusClass}">
+                        ${statusLabel}
+                    </span>
+
+                    ${publicationIndicator}
+
+                </div>
 
             </div>
 
@@ -472,6 +495,43 @@ function createExamCard(exam) {
 
         </article>
     `;
+}
+
+
+/* =========================================================
+   PUBLICATION INDICATOR
+   ========================================================= */
+
+/*
+ * IMPORTANT:
+ *
+ * This function does NOT affect examination status.
+ *
+ * It only provides an informational indication
+ * when an examination has not been published.
+ *
+ * This allows Developer A to display:
+ *
+ *     Scheduled + Draft
+ *     Available + Draft
+ *     Closed + Draft
+ *
+ * without changing the schedule-based business logic.
+ */
+
+function getPublicationIndicator(exam) {
+
+    if (exam.published === false) {
+
+        return `
+            <span class="exam-status draft">
+                Draft
+            </span>
+        `;
+    }
+
+
+    return "";
 }
 
 
@@ -574,7 +634,9 @@ function getExamIcon(status) {
                     r="8"
                 />
 
-                <path d="M12 8v4l3 2" />
+                <path
+                    d="M12 8v4l3 2"
+                />
             </svg>
         `;
     }
@@ -640,7 +702,6 @@ function getExamDetails(exam) {
         return `
             <p class="exam-card-time">
                 Opens ${escapeHTML(exam.startDate)}
-                · ${escapeHTML(exam.startTime)}
             </p>
         `;
     }
@@ -651,7 +712,6 @@ function getExamDetails(exam) {
         return `
             <p class="exam-card-time">
                 Open until ${escapeHTML(exam.endDate)}
-                · ${escapeHTML(exam.endTime)}
             </p>
         `;
     }
@@ -662,7 +722,6 @@ function getExamDetails(exam) {
         return `
             <p class="exam-card-time">
                 Closed on ${escapeHTML(exam.endDate)}
-                · ${escapeHTML(exam.endTime)}
             </p>
         `;
     }
@@ -720,7 +779,9 @@ function getExamAction(exam) {
                         r="8"
                     />
 
-                    <path d="M12 8v4l2.5 2.5" />
+                    <path
+                        d="M12 8v4l2.5 2.5"
+                    />
                 </svg>
 
                 <span>View Details</span>
