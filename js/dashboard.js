@@ -142,7 +142,7 @@ function displayStudentInformation(student) {
 function getUpcomingExams() {
 
     return MOCK_EXAMS.filter(
-        exam => exam.status === "scheduled"
+        exam => exam.status === "available"
     );
 }
 
