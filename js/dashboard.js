@@ -134,7 +134,13 @@ function displayStudentInformation(student) {
     }
 }
 
+
+/* =========================================================
+   UPCOMING EXAMS
+   ========================================================= */
+
 function getUpcomingExams() {
+
     return MOCK_EXAMS.filter(
         exam => exam.status === "scheduled"
     );
@@ -182,7 +188,8 @@ function renderDashboardStatistics() {
      * Upcoming examinations.
      */
 
-    const upcomingExams = getUpcomingExams();
+    const upcomingExams =
+        getUpcomingExams();
 
 
     if (availableExamCount) {
@@ -498,6 +505,7 @@ function getExamDetails(exam) {
 /* =========================================================
    EXAM ACTION
    ========================================================= */
+
 function getExamAction(exam) {
 
     if (exam.status === "in-progress") {
@@ -578,6 +586,7 @@ function getExamAction(exam) {
     return "";
 }
 
+
 /* =========================================================
    RECENT ATTEMPTS
    ========================================================= */
@@ -607,8 +616,23 @@ function renderRecentAttempts() {
     }
 
 
+    /*
+     * Sort recent attempts by completion date.
+     *
+     * A copy of MOCK_ATTEMPTS is sorted so that
+     * the original mock data remains unchanged.
+     */
+
+    const recentAttempts =
+        [...MOCK_ATTEMPTS].sort(
+            (first, second) =>
+                new Date(second.completedDate) -
+                new Date(first.completedDate)
+        );
+
+
     attemptsList.innerHTML =
-        MOCK_ATTEMPTS
+        recentAttempts
             .map(
                 attempt =>
                     createAttemptRow(attempt)

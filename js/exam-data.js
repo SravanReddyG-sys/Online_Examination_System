@@ -212,6 +212,24 @@ const MOCK_ATTEMPTS = [
         result: "Passed"
     },
 
+     {
+        id: "ATTEMPT-007",
+
+        examId: "EXAM-007",
+
+        examination: "Python Programming",
+
+        completedDate: "Oct 04, 2026",
+
+        score: 23,
+
+        totalMarks: 25,
+
+        percentage: 92,
+
+        result: "Passed"
+    },
+
 
     {
         id: "ATTEMPT-003",
