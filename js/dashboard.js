@@ -134,6 +134,12 @@ function displayStudentInformation(student) {
     }
 }
 
+function getUpcomingExams() {
+    return MOCK_EXAMS.filter(
+        exam => exam.status === "scheduled"
+    );
+}
+
 
 /* =========================================================
    DASHBOARD STATISTICS
@@ -176,10 +182,7 @@ function renderDashboardStatistics() {
      * Upcoming examinations.
      */
 
-    const upcomingExams =
-        MOCK_EXAMS.filter(
-            exam => exam.status === "scheduled"
-        );
+    const upcomingExams = getUpcomingExams();
 
 
     if (availableExamCount) {
