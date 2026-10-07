@@ -302,7 +302,10 @@ function createExamCard(exam) {
 
 
     return `
-        <article class="exam-card">
+        <article
+            class="exam-card"
+            data-status="${escapeHTML(exam.status)}"
+        >
 
             <div class="exam-card-top">
 
